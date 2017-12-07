@@ -1,0 +1,3 @@
+CREATE ROLE activemq LOGIN PASSWORD 'activemq' SUPERUSER;
+CREATE DATABASE activemq WITH OWNER = activemq;
+GRANT CONNECT ON DATABASE activemq TO activemq

@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   activemq-a:
-    image: "ci/activemq:5.11.0"
+    build: ./activemq-5.11
     ports:
      - "61616:61616"
      - "5672:5672"
@@ -9,17 +9,36 @@ services:
     secrets:
      - source: config-a
        target: /opt/activemq/conf/activemq.xml
-  activemq-b:
-    image: "ci/activemq:5.15.2"
+  activemq-b1:
+    build: ./activemq-5.15
+    depends_on:
+     - "db-b"
     ports:
      - "61617:61616"
      - "5673:5672"
      - "8162:8161"
     secrets:
-     - source: config-b
+     - source: config-b1
        target: /opt/activemq/conf/activemq.xml
+  activemq-b2:
+    build: ./activemq-5.15
+    depends_on:
+     - activemq-b1
+    ports:
+     - "61618:61616"
+     - "5674:5672"
+     - "8163:8161"
+    secrets:
+     - source: config-b2
+       target: /opt/activemq/conf/activemq.xml
+  db-b:
+    build: ./postgres-amq
+    ports:
+     - "5434"
 secrets:
   config-a:
     file: ./activemq-a.xml
-  config-b:
-    file: ./activemq-b.xml
+  config-b1:
+    file: ./activemq-b1.xml
+  config-b2:
+    file: ./activemq-b2.xml
