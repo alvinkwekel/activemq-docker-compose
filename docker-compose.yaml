@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  activemq-a:
+    image: "ci/activemq:5.11.0"
+    ports:
+     - "61616:61616"
+     - "5672:5672"
+     - "8161:8161"
+    secrets:
+     - source: config-a
+       target: /opt/activemq/conf/activemq.xml
+  activemq-b:
+    image: "ci/activemq:5.15.2"
+    ports:
+     - "61617:61616"
+     - "5673:5672"
+     - "8162:8161"
+    secrets:
+     - source: config-b
+       target: /opt/activemq/conf/activemq.xml
+secrets:
+  config-a:
+    file: ./activemq-a.xml
+  config-b:
+    file: ./activemq-b.xml
